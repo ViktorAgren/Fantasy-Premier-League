@@ -14,9 +14,9 @@ def display_history(player,year):
 def find_player_id(player,year):
     name = player.split()
     player_id = "FPL-Folder/data/"+year+"/player_idlist.csv"
-    df_id = pd.read_csv(player_id,index_col=False)
-    df_id = df_id[df_id["first_name"] == name[0]]
-    id = df_id[df_id["second_name"] == name[1]]['id'].to_string(index=False)
+    df = pd.read_csv(player_id,index_col=False)
+    df = df[df["first_name"] == name[0]]
+    id = df[df["second_name"] == name[1]]['id'].to_string(index=False)
     return id
 
 def find_team_id(team,year):
