@@ -20,7 +20,7 @@ def parse_data():
         xPoint['id'] = e['id']
         xPoint['xP'] = e['ep_this']
         xPoints += [xPoint]
-    gw_num = 37
+    gw_num = 38
     #events = data["events"]
     #for event in events:
     #    if event["is_current"] == True:
