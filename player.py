@@ -1,6 +1,16 @@
 import pandas as pd
 import difflib
-def display_history(player,year):
+def display_history(player, year):
+    """
+    Given a player's name and the year, displays the gameweek history of the player.
+
+    Parameters:
+    player (str): The name of the player.
+    year (str): The year of the season.
+
+    Returns:
+    Markdown table: The points per gameweek
+    """
     name = player.split()
     id = find_player_id(player, year)
     name_id = "_".join([name[0], name[1], id])
@@ -8,9 +18,19 @@ def display_history(player,year):
     df = df.reset_index()
     df = df[['round', 'total_points']]
     df.columns = ['Gameweek', 'Points']
-    return print(df.to_markdown(index=False))
+    print(df.to_markdown(index=False))
 
-def find_player_id(player,year):    
+def find_player_id(player,year):
+    """
+    Given a player's name and the year, returns the ID of the player.
+
+    Parameters:
+    player (str): The name of the player.
+    year (str): The year of the season.
+
+    Returns:
+    str: The ID of the player.
+    """
     name = player.split()
     player_id = "FPL-Folder/data/"+year+"/player_idlist.csv"
     df = pd.read_csv(player_id,index_col=False)
@@ -18,26 +38,65 @@ def find_player_id(player,year):
     id = df[df["second_name"] == name[1]]['id'].to_string(index=False)
     return id
 
-def find_team_id(team,year):
+def find_team_id(team, year):
+    """
+    Given a team name and the year, returns the ID of the team.
+
+    Parameters:
+    team (str): The name of the team.
+    year (str): The year of the season.
+
+    Returns:
+    str: The ID of the team.
+    """
     teams = "FPL-Folder/data/"+year+"/teams.csv"
     df_id = pd.read_csv(teams,index_col=False)
     id = df_id[df_id["name"] == team]['id'].to_string(index=False)
     return id
 
 def display_players_in_squad(team, year):
+    """
+    Given a team name and the year, displays the list of players in the team.
+
+    Parameters:
+    team (str): The name of the team.
+    year (str): The year of the season.
+
+    Returns:
+    Markdown table: The first and second name of players in squad
+    """
     team_id = int(find_team_id(team,year))
     players_raw = "FPL-Folder/data/"+year+"/players_raw.csv"
     df = pd.read_csv(players_raw,index_col=False)
     df = df[df['team'] == team_id]
     df = df[['first_name','second_name']]
-    return print(df.to_markdown(index=False))
+    print(df.to_markdown(index=False))
 
 def display_teams(year):
+    """
+    Given a year, displays the list of teams in the season.
+
+    Parameters:
+    year (str): The year of the season.
+
+    Returns:
+    Markdown table: The teams in the given season
+    """
     teams = "FPL-Folder/data/"+year+"/teams.csv"
     df = pd.read_csv(teams,index_col=False)['name']
-    return print(df.to_markdown(index=False))
+    print(df.to_markdown(index=False))
 
 def display_transfer_history(player, year):
+    """
+    Given a player's name and the year, displays the transfer history of the player.
+
+    Parameters:
+    player (str): The name of the player.
+    year (str): The year of the season.
+
+    Returns:
+    Markdown table: The transfers per gameweek for a certain player
+    """
     name = player.split()
     id = find_player_id(player, year)
     name_id = name[0]+'_'+name[1]+'_'+id
@@ -46,7 +105,7 @@ def display_transfer_history(player, year):
     df = df.reset_index()
     df = df[['round','transfers_balance','transfers_in','transfers_out']]
     df.columns = ['Gameweek','Net transfers','Transfers in', 'Transfers out']
-    return print(df.to_markdown(index=False))
+    print(df.to_markdown(index=False))
 
 def main():
     decision = input("What would you like to print?\n 1: Display teams per year\n 2: Display players in team per year\n 3: Display player gameweek history per year\n 4: Display player transfer history per year\n")
